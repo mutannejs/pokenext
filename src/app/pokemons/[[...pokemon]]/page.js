@@ -1,8 +1,8 @@
-import Image from "next/image";
+import { notFound } from "next/navigation";
+
+import PokemonImage from "@/components/PokemonImage";
 
 import styles from '@/styles/Pokemon.module.css';
-import PokemonImage from "@/components/PokemonImage";
-import { notFound } from "next/navigation";
 
 export const generateStaticParams = async() => {
     const maxPokemons = 151;
@@ -16,15 +16,30 @@ export const generateStaticParams = async() => {
     } );
 
     return data.results.map((pokemon, index) => ({
-        pokemonid: (index + 1).toString()
+        pokemon: [
+            (index + 1).toString(),
+            pokemon.name
+        ]
     }));
 }
 
 export const dynamicParams = true; // cria dinamicamente as páginas estáticas dos pokemons até o limite definifo (251), mas permite renderizar páginas além desse limite ao receber um acesso
 
+function convertName(name) {
+    return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
+export async function generateMetadata({params}) {
+    if (params.pokemon[1]) {
+        return {
+            title: convertName(params.pokemon[1])
+        }
+    }
+}
+
 export default async function Pokemon({ params }) {
 
-    const id = params.pokemonid;
+    const id = params.pokemon[0];
     const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
 
     if (!resp.ok) {

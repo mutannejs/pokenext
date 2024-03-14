@@ -8,7 +8,10 @@ import Navbar from "@/components/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "PokeNext",
+  title: {
+    default: "PokeNext",
+    template: "%s | PokeNext"
+  },
   description: "Pokedex feito utilizando Next",
 };
 

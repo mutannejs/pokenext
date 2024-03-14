@@ -14,8 +14,13 @@
     align-items: center;
 }
 
+.navbar a {
+    text-decoration: none;
+}
+
 .logo h1 {
     margin-left: .5em;
+    color: white;
 }
 
 .link_items {
