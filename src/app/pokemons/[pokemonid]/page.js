@@ -1,9 +1,11 @@
 import Image from "next/image";
 
 import styles from '@/styles/Pokemon.module.css';
+import PokemonImage from "@/components/PokemonImage";
+import { notFound } from "next/navigation";
 
 export const generateStaticParams = async() => {
-    const maxPokemons = 151; //251;
+    const maxPokemons = 151;
     const api_route = 'https://pokeapi.co/api/v2/pokemon/';
 
     const data = await fetch(`${api_route}/?limit=${maxPokemons}`)
@@ -18,23 +20,23 @@ export const generateStaticParams = async() => {
     }));
 }
 
-export const dynamicParams = false;
+export const dynamicParams = true; // cria dinamicamente as páginas estáticas dos pokemons até o limite definifo (251), mas permite renderizar páginas além desse limite ao receber um acesso
 
 export default async function Pokemon({ params }) {
 
     const id = params.pokemonid;
     const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+
+    if (!resp.ok) {
+        notFound();
+    }
+
     const pokemon = await resp.json();
 
     return (
         <div className={styles.pokemon_container}>
             <h1 className={styles.title}>{pokemon.name}</h1>
-            <Image
-                src={`https://unpkg.com/pokeapi-sprites@2.0.4/sprites/pokemon/other/dream-world/${pokemon.id}.svg`}
-                width={200}
-                height={200}
-                alt={pokemon.name}
-            />
+            <PokemonImage id={pokemon.id} name={pokemon.name} size={200} />
             <div>
                 <h3>Número:</h3>
                 <p>{pokemon.id}</p>

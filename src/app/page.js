@@ -6,7 +6,7 @@ import styles from '@/styles/Home.module.css';
 
 export default async function Home() {
 
-  const maxPokemons = 151;//251;
+  const maxPokemons = 151;
   const api_route = 'https://pokeapi.co/api/v2/pokemon/';
 
   // data é um json com 4 atributos: count, next, previous e results (onde temos os pokemons, seu nome e uma url para suas características)
