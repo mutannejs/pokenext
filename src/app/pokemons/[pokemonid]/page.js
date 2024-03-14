@@ -3,7 +3,7 @@ import Image from "next/image";
 import styles from '@/styles/Pokemon.module.css';
 
 export const generateStaticParams = async() => {
-    const maxPokemons = 151;//251;
+    const maxPokemons = 151; //251;
     const api_route = 'https://pokeapi.co/api/v2/pokemon/';
 
     const data = await fetch(`${api_route}/?limit=${maxPokemons}`)
@@ -13,9 +13,9 @@ export const generateStaticParams = async() => {
         item.id = index + 1;
     } );
 
-    return data.results.map((pokemon, index) => {
+    return data.results.map((pokemon, index) => ({
         pokemonid: (index + 1).toString()
-    });
+    }));
 }
 
 export const dynamicParams = false;
